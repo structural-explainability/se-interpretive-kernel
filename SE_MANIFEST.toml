@@ -1,0 +1,91 @@
+# ============================================================
+# SE_MANIFEST.toml (Repository Declaration)
+# ============================================================
+
+schema = "se-manifest-schema"
+schema_version = "0.5.2"
+schema_url = "https://raw.githubusercontent.com/structural-explainability/se-manifest-schema/main/manifest-schema.toml"
+
+# === Framework Context ===
+
+[meta]
+framework = "Structural Explainability"
+framework_url = "https://github.com/structural-explainability"
+purpose = "Declares this repository's role in the Structural Explainability ecosystem."
+
+# === Repository Identity ===
+
+[repository]
+organization = "structural-explainability"
+name = "se-interpretive-kernel"
+class = "contract"
+kind = "construction"
+status = "active"
+since = "2026"
+summary = "Declares the interpretive kernel construction: the finite comparison of frames under a declared interpretation, the threshold identity regime a declared regime requires, and the laws a comparison lifting must satisfy for either to be defined."
+
+# === Layer Position ===
+
+[layer]
+space = "research"
+role = "language-neutral-contract"
+
+# === Contract ===
+
+[contract]
+contract_version = "0.1.0"
+contract_role = "authority"
+contract_authority = "se-interpretive-kernel"
+exports_verified_contract = false
+
+# === Dependency Declarations ===
+
+[depends]
+required = []
+optional = []
+
+# === Provided Artifacts ===
+
+[provides]
+artifacts = [
+    "src/se_interpretive_kernel",
+    "tests",
+    "README.md",
+]
+
+# === Validation ===
+
+[validation]
+entrypoint = "uv run pytest"
+
+# === Scope ===
+
+[scope]
+includes = [
+    "finite partition algebra over a declared carrier: refinement, meet, join, equivalence closure, and refinement witnesses",
+    "the comparison lifting protocol and the three cost laws it must satisfy",
+    "exhaustive law checking for a supplied comparison lifting",
+    "the counterexample separating monotone comparisons from meet-preserving ones",
+    "the counterexample showing that optimal matching over bijections is not a lifting",
+    "indexed pointwise comparison as the selected meet-preserving lifting",
+]
+
+excludes = [
+    "any interpretation function, which is supplied by the consuming domain",
+    "any domain vocabulary for frames, schedules, occurrences, or resolution",
+    "selection of the normatively correct identity regime",
+    "selection of the probe domain, whose declaration belongs to the consumer",
+    "selection of a canonicalization, which is a declared artifact of the consumer",
+    "proof of probe-domain completeness",
+]
+
+# === Citation ===
+
+[citation]
+cff = "CITATION.cff"
+preferred = "CITATION.cff"
+
+# === Traceability ===
+
+[traceability]
+identifier_map = "none"
