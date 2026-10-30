@@ -1,5 +1,7 @@
-"""SE Verification of Operational Identity (SE-210).
+"""SE Interpretive Kernel (SE-220).
 
-A companion to the paper, providing executable verification of the
-finite procedures, classifications, and constructions presented in Paper 210, Operational Identity.
+A companion to the paper, providing executable finite constructions and checks
+for the interpretation-induced kernel, the generated occurrence regime, their
+adjunction, interpretive thresholds, pairwise demand, and incompatibility
+witnesses.
 """

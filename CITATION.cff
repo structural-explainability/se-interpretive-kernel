@@ -1,22 +1,19 @@
 # ============================================================
 # CITATION.cff (How to cite this project)
 # ============================================================
-
 # REQ.UNIVERSAL: Professional open projects SHOULD include this file.
+# May reference upstream dependencies, but must not refer to downstream.
 # USAGE: See https://citation-file-format.github.io/ for details.
+# check with:
+# uvx cffconvert --validate
 
 cff-version: "1.2.0"
 type: software
 message: "If you use this work, please cite it using the metadata in this file."
 
-title: "Structural Explainability Verification: Operational Identity"
+title: "Structural Explainability Verification: Interpretive Kernel"
 version: "0.1.0"
-date-released: "2026-07-22"
-
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.21499598"
-    description: "Concept DOI for all versions"
+date-released: "2026-10-30"
 
 authors:
   - family-names: Case
@@ -30,35 +27,25 @@ url: "https://github.com/structural-explainability/se-interpretive-kernel"
 license: MIT
 
 abstract: >
-  A Python verification harness for the finite procedures and constructions
-  presented in Paper SE-210, Operational Identity.
-  The software compares an explicit quadratic oracle with an
-  optimized partition-based implementation
-  and exercises faithfulness, divergence witnesses,
-  sibling-relative classification, regime substitution, and the
-  monotonic persistence of failure under history extension.
+  A Python implementation and verification harness for the finite
+  interpretive kernel of Structural Explainability.
+  Given finite frames, outputs, and probes with a total interpretation,
+  the software computes the interpretation-induced kernel of an output
+  regime, the generated occurrence regime and interpretive threshold of a
+  frame regime, finite incompatibility witnesses, and pairwise interpretive
+  demand.
+  It checks the adjunction between kernel and generated regime, their
+  preservation properties, and the laws a comparison lifting must satisfy,
+  exhaustively on small cases and on seeded random artifacts, against an
+  independent pair-set oracle.
 
 keywords:
   - structural-explainability
-  - operational-identity
-  - identity-regimes
-  - record-systems
+  - interpretive-kernel
+  - interpretation
   - equivalence-relations
   - partitions
   - refinement
+  - galois-connection
   - verification
   - differential-testing
-  - mutation-testing
-
-preferred-citation:
-  type: article
-  title: "Operational Identity: A Finite Audit of Declared and Implemented Rules of Sameness"
-  authors:
-    - family-names: Case
-      given-names: Denise M.
-      orcid: "https://orcid.org/0000-0001-6165-7389"
-  year: 2026
-  # identifiers:
-  #   - type: other
-  #     value: "arXiv:XXXX.XXXXX"
-  #     description: "arXiv preprint"

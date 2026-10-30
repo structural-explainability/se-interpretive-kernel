@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/se-interpretive-kernel?logo=pypi&label=pypi)](https://pypi.org/project/se-interpretive-kernel/)
 [![Docs Site](https://img.shields.io/badge/docs-site-blue?logo=github)](https://structural-explainability.github.io/se-interpretive-kernel/)
 [![Repo](https://img.shields.io/badge/repo-GitHub-black?logo=github)](https://github.com/structural-explainability/se-interpretive-kernel)
-[![Python 3.14](https://img.shields.io/badge/python-3.14%2B-blue?logo=python)](./pyproject.toml)
+[![Python 3.15](https://img.shields.io/badge/python-3.15%2B-blue?logo=python)](./pyproject.toml)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 
 [![CI](https://github.com/structural-explainability/se-interpretive-kernel/actions/workflows/ci-python-zensical.yml/badge.svg?branch=main)](https://github.com/structural-explainability/se-interpretive-kernel/actions/workflows/ci-python-zensical.yml)
@@ -14,23 +14,23 @@
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg)](https://github.com/structural-explainability/se-interpretive-kernel/security)
 
 > An executable contract for the Structural Explainability (SE) **interpretive kernel**:
-> when a declared identity regime over environments induces well-defined judgments about the
+> when a declared identity regime over frames induces well-defined judgments about the
 > objects an interpretation produces, and what it costs when it does not.
 
 ## Purpose
 
-An interpretation `I` maps a probe and an environment to structured output.
+An interpretation `I` maps a probe and a frame to structured output.
 Fix a finite probe domain `P` and an equivalence `rho` on outputs.
-The **interpretive kernel** relates two environments when no probe can tell
+The **interpretive kernel** relates two frames when no probe can tell
 them apart:
 
 ```text
 F ~ker F'   iff   for every p in P, I(p, F) is rho-indistinguishable from I(p, F')
 ```
 
-A declared identity regime over environments induces well-defined
+A declared identity regime over frames induces well-defined
 object-level judgments exactly when it refines the kernel, and every failure
-comes with a finite witness: the probe and the pair of environments on which
+comes with a finite witness: the probe and the pair of frames on which
 the regime identifies what interpretation separates.
 
 The stronger result is the **threshold**.
@@ -49,25 +49,6 @@ not
 
 The construction is domain-agnostic.
 Interpretation is supplied by the consuming domain and not imported.
-
-## Status
-
-This is the first slice.
-
-- **`partition.py`**: finite partition algebra over a declared carrier.
-  Refinement, meet, join, equivalence closure by union-find, refinement
-  witnesses, and exhaustive enumeration for law checking.
-  The order is refinement, so finer partitions are lower, the discrete
-  partition is bottom, meet is intersection, and join is the closure of the
-  union.
-- **`lifting.py`**: comparison liftings, the three cost laws, and validators
-  for those laws, for meet preservation, and for monotonicity.
-
-The layer boundary is deliberate.
-`partition.py` imports nothing else in this package and carries no vocabulary
-from the layers above it, so it can be extracted later without a rewrite.
-It is not extracted now, because extraction is justified by a second consumer
-needing the same public surface and no second consumer exists.
 
 ## Comparison Liftings Have Laws
 
@@ -89,11 +70,11 @@ that decides whether a supplied comparison has them.
 Two comparisons in this package are present because they fail, and both
 failures are regressions that must keep failing.
 
-| comparison                       | monotone | meet-preserving | is a lifting               |
-| -------------------------------- | -------- | --------------- | -------------------------- |
-| indexed pointwise                | yes      | yes             | yes                        |
-| quotient-image equality          | yes      | **no**          | no                         |
-| optimal matching over bijections | -        | -               | **no**, triangle law fails |
+- **Indexed pointwise**: monotone, meet-preserving, and a lifting.
+- **Quotient-image equality**: monotone, but not meet-preserving, so not a
+  lifting.
+- **Optimal matching over bijections**: not a lifting, because the triangle
+  law fails.
 
 Quotient-image equality on unordered outputs is the natural way to compare
 occurrence sets and does not preserve meets, so no cost represents it.
@@ -115,17 +96,14 @@ declares an identity without ever appearing as a declared identity regime.
 ## Run
 
 ```bash
-uv sync --extra dev --extra docs --upgrade
+uv sync
 
 uv run pytest
 ```
 
-## Developer Command Reference
+## Developer
 
-<details>
-<summary>Show command reference</summary>
-
-### In a machine terminal
+### Clone and copy
 
 Open a machine terminal where you want the project:
 
@@ -136,34 +114,22 @@ cd se-interpretive-kernel
 code .
 ```
 
-### In a VS Code terminal
+### Open in VS Code and Run
+
+In a VS Code terminal
+
+```pwsh
+.\sit
+
+uv run se-interpretive-kernel --random 2000 --seed 0
+```
 
 ```shell
-uv self update
-uv python pin 3.14
-uv lock --upgrade
-uv sync --extra dev --extra docs --upgrade
-
-uvx pre-commit install
-uvx pre-commit autoupdate
-
-git add -A
-uvx pre-commit run --all-files
-# repeat if changes were made
-uvx pre-commit run --all-files
-
-# types, tests, docs
-uv run pyright
-uv run pytest
-uv run zensical build
-
 # save progress
 git add -A
 git commit -m "update"
 git push -u origin main
 ```
-
-</details>
 
 ## Planned
 
@@ -173,14 +139,10 @@ The boundary of the current slice is explicit.
   which makes length mismatch a declared comparison result rather than an
   exception.
 - `signature.py`: declared roles for each variable. A variable in the probe
-  domain is a test condition, in the environment domain it is a thing whose
+  domain is a test condition, in the frame domain it is a thing whose
   sameness is at issue, and in the output domain it is observable. The same
   variable in three positions asks three different questions, so position is
   a declaration and must be validated.
-- `kernel.py` and `threshold.py`: `K` and `L` over a supplied interpretation,
-  sharing one generating-pair construction so the adjunction round trip is
-  not tested against two independent implementations.
-- `witness.py`: witness forms for each failure.
 
 ## Related Repositories
 

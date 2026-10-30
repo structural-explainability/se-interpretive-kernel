@@ -13,22 +13,25 @@ and this project adheres to **[Semantic Versioning](https://semver.org/spec/v2.0
 
 ---
 
-## [0.1.0] - 2026-07-22
+## [0.1.0] - 2026-10-30
 
 ### Added
 
-- Added the initial Python package.
-- Added the command-line interface.
-- Added a transparent quadratic oracle that evaluates the SE-210 definitions
-  using explicit record-pair relations.
-- Added an optimized union-find and partition-label implementation of the
-  finite procedure described in Theorem 5.2.
-- Added regression cases derived from the paper's examples, propositions,
-  classifications, and history-extension construction.
-- Added deterministic exhaustive-small and seeded randomized differential
-  testing.
-- Added mutation tests for refinement direction, sibling classification,
-  declared-class restriction, and regime substitution.
+- Added the initial Python package, the executable companion to the Lean
+  library `se-theory-interpretive-kernel`.
+- Added the finite partition algebra and the comparison lifting protocol with
+  the three cost laws and their validators.
+- Added the finite artifact: frames, outputs, probes, and a total
+  interpretation table.
+- Added the interpretation-induced kernel, coherence, the generated occurrence
+  regime, and the interpretive threshold.
+- Added finite incompatibility witnesses and pairwise interpretive demand with
+  the generalized ultrametric laws.
+- Added an independent pair-set oracle for the partition-based
+  implementation.
+- Added finite cases mirroring the Lean examples.
+- Added exhaustive law checks over every probe family and every pair of
+  regimes, and seeded random artifacts, run by the command-line interface.
 - Added documentation, CI, release automation, and the repository manifest.
 
 ---
@@ -55,19 +58,18 @@ Follow these steps exactly when creating a new release.
 
 ### Task 2. Validate
 
-```shell
-uv sync --extra dev --extra docs --upgrade
-uvx pre-commit install
+```pwsh
+.\sit.ps1
 
-git add -A
-uvx pre-commit run --all-files
-uvx pre-commit run --all-files
+uvx gha-tools autoupdate --pin=all --write .github/workflows
 
-uv run pyright
-uv run pytest
-uv run zensical build
+uvx zizmor@latest .github/
+# suppressed and informational are okay
 
+uvx cffconvert --validate
 uvx se-manifest-schema validate-manifest --strict
+
+uv run se-interpretive-kernel --random 2000 --seed 0
 
 uv run python -c "import shutil; from pathlib import Path; shutil.rmtree(Path('dist'), ignore_errors=True)"
 
@@ -104,7 +106,7 @@ gh run list --workflow=release-pypi.yml   # confirm the workflow succeeded
 
 Confirm Zenodo shows a new version-specific DOI for this release
 and that it remains linked under the
-repository's [concept DOI](https://zenodo.org/records/21499598).
+repository's concept DOI recorded in `CITATION.cff`.
 
 ## Only As Needed (delete a tag)
 

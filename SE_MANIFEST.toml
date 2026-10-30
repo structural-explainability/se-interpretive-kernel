@@ -63,6 +63,12 @@ entrypoint = "uv run pytest"
 [scope]
 includes = [
     "finite partition algebra over a declared carrier: refinement, meet, join, equivalence closure, and refinement witnesses",
+    "the finite artifact: frames, outputs, probes, and a total interpretation table",
+    "the interpretation-induced kernel and coherence of a frame regime with an output regime",
+    "the generated occurrence regime and the interpretive threshold",
+    "finite incompatibility witnesses",
+    "pairwise interpretive demand and the generalized ultrametric laws",
+    "exhaustive and seeded random law checks, with an independent pair-set oracle",
     "the comparison lifting protocol and the three cost laws it must satisfy",
     "exhaustive law checking for a supplied comparison lifting",
     "the counterexample separating monotone comparisons from meet-preserving ones",
@@ -71,7 +77,7 @@ includes = [
 ]
 
 excludes = [
-    "any interpretation function, which is supplied by the consuming domain",
+    "any domain interpretation, which the consumer supplies as a finite table; the package ships only the toy tables of the Lean examples",
     "any domain vocabulary for frames, schedules, occurrences, or resolution",
     "selection of the normatively correct identity regime",
     "selection of the probe domain, whose declaration belongs to the consumer",
