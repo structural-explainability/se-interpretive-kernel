@@ -13,12 +13,45 @@
 # ============================================================
 
 [project]
+authors = [{name = "Denise M. Case"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
 description = "Executable contract for the Structural Explainability interpretive kernel: finite kernel, generated occurrence regime, thresholds, witnesses, and comparison-lifting laws"
 dynamic = ["version"] # WHY: Version is computed from git tags at build time (see [tool.hatch.version]).
-license = {file = "LICENSE"}
+keywords = [
+  "structural-explainability",
+  "interpretive-kernel",
+  "equivalence-relations",
+  "partitions",
+  "refinement",
+  "galois-connection",
+  "identity",
+  "verification",
+  "research-software",
+]
+license = "MIT" # WHY: SPDX expression (PEP 639); the license classifier is intentionally omitted.
+license-files = ["LICENSE"]
+maintainers = [{name = "Denise M. Case"}]
 name = "se-interpretive-kernel"
 readme = "README.md"
-requires-python = ">=3.15"
+requires-python = ">=3.12" # WHY: Code uses `type` statements (3.12+); CI tests 3.12 through 3.15.
 
 # ============================================================
 # === SECTION: PROJECT RUNTIME DEPENDENCIES ===

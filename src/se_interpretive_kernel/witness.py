@@ -8,6 +8,8 @@ A witness shows that the supplied phi, rho, probes, and interpretation are
 incompatible. It does not show which of them is the faulty choice.
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from dataclasses import dataclass
 

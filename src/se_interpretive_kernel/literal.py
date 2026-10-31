@@ -8,6 +8,8 @@ cross-check rather than a restatement.
 The functions are slow and intended only for small finite cases.
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable, Sequence
 
 from .artifact import Artifact

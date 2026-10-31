@@ -15,10 +15,12 @@ Nothing here decides which probes, frames, or outputs a domain ought to
 declare, and nothing here shows that an interpretation is correct.
 """
 
+from __future__ import annotations
+
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
-from .partition import Item
+from se_interpretive_kernel.partition import Item
 
 
 @dataclass(frozen=True)

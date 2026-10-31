@@ -18,6 +18,8 @@ block. :func:`generated` does that; :func:`generated_all_pairs` uses every
 pair and exists so the two can be compared.
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 
 from .artifact import Artifact

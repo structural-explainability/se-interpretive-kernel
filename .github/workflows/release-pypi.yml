@@ -39,6 +39,7 @@ jobs:
   # ------------------------------------------------------------
   pre-release:
     uses: $/.github/workflows/pre-release.yml
+    # Use $ for GitHub's dedicated self-repository syntax
 
   # ------------------------------------------------------------
   # 2) Publish the exact artifact that pre-release built and checked.

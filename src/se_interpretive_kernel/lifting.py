@@ -45,6 +45,8 @@ supplies the index, and the price of that choice is a cost no finer than the
 best matching would have required.
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from itertools import permutations

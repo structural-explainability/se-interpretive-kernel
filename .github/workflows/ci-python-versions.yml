@@ -1,0 +1,140 @@
+# ============================================================
+# .github/workflows/ci-python-versions.yml (ALL-PY-SRC-PYPI-REPOS)
+# ============================================================
+# Updated: 2026-10-31
+#
+# WHAT: A GitHub Actions workflow that runs the test suite on every
+#       Python version the package claims to support.
+#
+# WHEN: Use for Python packages published to PyPI, where users may run
+#       any Python version listed in pyproject.toml.
+#
+# TRIGGER: Runs when changes are pushed to main or a pull request targets
+#          main. It can also be started manually or called by another workflow.
+#
+# WHY: A package should only claim the Python versions it is tested on.
+#      The versions come from the "Programming Language :: Python :: 3.x"
+#      classifiers in pyproject.toml, so the claim and the test matrix
+#      cannot drift apart. Add or remove a classifier to change the matrix.
+#
+# REQ: pyproject.toml MUST list one "Programming Language :: Python :: 3.x"
+#      classifier for each supported version.
+# REQ: pyproject.toml MUST have a dependency group named "dev" with pytest.
+# REQ: CI MUST validate only; it never persists file changes or deploys.
+# OBS: Generic only; repo-specific checks belong in separate workflows.
+# OBS: The main CI workflow still runs on the version in .python-version.
+# ============================================================
+
+name: CI (Python versions)
+
+on:
+  push:
+    branches: [main] # WHY: Validate on every push to GitHub branch `main`.
+  pull_request:
+    branches: [main] # WHY: Validate pull requests before merge.
+  workflow_call: # WHY: Allow this workflow to be called by other workflows.
+  workflow_dispatch: # WHY: Allow manual trigger from Actions tab.
+
+permissions:
+  contents: read # WHY: Least privilege; checks only read repository contents.
+
+concurrency:
+  group: ci-python-versions-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  # WHY: Cancel a running check when new code is pushed to the same branch.
+
+env:
+  PYTHONUNBUFFERED: "1" # WHY: Display Python output immediately in CI logs.
+  UV_FROZEN: "1" # WHY: Use the committed lockfile without updating it.
+
+jobs:
+  versions:
+    name: Read supported Python versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      versions: ${{ steps.read.outputs.versions }}
+
+    steps:
+      - name: A1) Checkout repository code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: A2) Read versions from pyproject.toml classifiers
+        id: read
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import re
+          import tomllib
+
+          with open("pyproject.toml", "rb") as handle:
+              project = tomllib.load(handle)["project"]
+
+          prefix = "Programming Language :: Python :: "
+          pattern = re.compile(re.escape(prefix) + r"(3\.\d+)")
+          versions = [
+              match.group(1)
+              for classifier in project.get("classifiers", [])
+              if (match := pattern.fullmatch(classifier))
+          ]
+          if not versions:
+              raise SystemExit("No 'Programming Language :: Python :: 3.x' classifiers found")
+          versions.sort(key=lambda version: int(version.split(".")[1]))
+          print("versions=" + json.dumps(versions))
+          PY
+        # WHY: The classifiers are the single source of truth for supported versions.
+        # OBS: Only versions such as 3.12 match; "3" and "3 :: Only" do not.
+
+      - name: A3) Show the versions to be tested
+        shell: bash
+        env:
+          VERSIONS: ${{ steps.read.outputs.versions }}
+        run: |
+          echo "Testing Python versions: $VERSIONS"
+
+  test:
+    name: Tests on Python ${{ matrix.python-version }}
+    needs: versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false # WHY: Report every failing version, not just the first.
+      matrix:
+        python-version: ${{ fromJSON(needs.versions.outputs.versions) }}
+
+    steps:
+      - name: B1) Checkout repository code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: B2) Install uv (with caching and uv.lock awareness)
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: B3) Install this matrix Python
+        shell: bash
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+        run: uv python install "$PYTHON_VERSION"
+
+      - name: B4) Install the project and the dev group from the lockfile
+        shell: bash
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+        run: uv sync --frozen --python "$PYTHON_VERSION" --no-default-groups --group dev
+        # WHY: Install only what tests need; docs tooling is not required here.
+        # REQ: CI MUST fail rather than update a stale or incompatible lockfile.
+
+      - name: B5) Show tool versions
+        run: |
+          uv --version
+          uv run --frozen --no-sync python --version
+
+      - name: B6) Run pytest
+        run: uv run --frozen --no-sync python -m pytest

@@ -4,6 +4,8 @@ Deterministic for a given seed. Sizes are kept small so that exhaustive
 enumeration of partitions of the outputs and the frames stays cheap.
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from random import Random
 

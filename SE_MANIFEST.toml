@@ -67,6 +67,10 @@ includes = [
     "the interpretation-induced kernel and coherence of a frame regime with an output regime",
     "the generated occurrence regime and the interpretive threshold",
     "finite incompatibility witnesses",
+    "probe sensitivity of the kernel and the threshold",
+    "derivations of the identifications a threshold forces",
+    "loading an artifact and a frame regime from tabular data, with declared handling of empty cells",
+    "a report of the differences between two frame regimes",
     "pairwise interpretive demand and the generalized ultrametric laws",
     "exhaustive and seeded random law checks, with an independent pair-set oracle",
     "the comparison lifting protocol and the three cost laws it must satisfy",
@@ -83,6 +87,8 @@ excludes = [
     "selection of the probe domain, whose declaration belongs to the consumer",
     "selection of a canonicalization, which is a declared artifact of the consumer",
     "proof of probe-domain completeness",
+    "any claim about which of two identity regimes is correct; the package reports differences and does not certify ground truth",
+    "normalization or cleaning of values, which is the consumer's declared probe",
 ]
 
 # === Citation ===

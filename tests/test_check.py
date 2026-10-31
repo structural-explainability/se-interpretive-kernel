@@ -1,5 +1,7 @@
 """Run the Interpretive Kernel law checks under pytest."""
 
+from __future__ import annotations
+
 from se_interpretive_kernel.cases import all_cases
 from se_interpretive_kernel.check import check_artifact, check_cases, main
 

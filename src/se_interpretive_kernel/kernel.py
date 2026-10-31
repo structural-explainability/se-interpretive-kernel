@@ -14,6 +14,8 @@ With no selected probes every frame has the empty signature, so the kernel is
 the indiscrete partition (Lean: ``kernelRel_noProbes``).
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 
 from .artifact import Artifact

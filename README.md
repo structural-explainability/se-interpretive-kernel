@@ -3,8 +3,8 @@
 [![PyPI](https://img.shields.io/pypi/v/se-interpretive-kernel?logo=pypi&label=pypi)](https://pypi.org/project/se-interpretive-kernel/)
 [![Docs Site](https://img.shields.io/badge/docs-site-blue?logo=github)](https://structural-explainability.github.io/se-interpretive-kernel/)
 [![Repo](https://img.shields.io/badge/repo-GitHub-black?logo=github)](https://github.com/structural-explainability/se-interpretive-kernel)
-[![Python 3.15](https://img.shields.io/badge/python-3.15%2B-blue?logo=python)](./pyproject.toml)
-[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
+[![Python](https://img.shields.io/pypi/pyversions/se-interpretive-kernel?logo=python)](https://pypi.org/project/se-interpretive-kernel/)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://github.com/structural-explainability/se-interpretive-kernel/blob/main/LICENSE)
 
 [![CI](https://github.com/structural-explainability/se-interpretive-kernel/actions/workflows/ci-python-zensical.yml/badge.svg?branch=main)](https://github.com/structural-explainability/se-interpretive-kernel/actions/workflows/ci-python-zensical.yml)
 [![Docs-Deploy](https://github.com/structural-explainability/se-interpretive-kernel/actions/workflows/deploy-zensical.yml/badge.svg?branch=main)](https://github.com/structural-explainability/se-interpretive-kernel/actions/workflows/deploy-zensical.yml)
@@ -16,6 +16,53 @@
 > An executable contract for the Structural Explainability (SE) **interpretive kernel**:
 > when a declared identity regime over frames induces well-defined judgments about the
 > objects an interpretation produces, and what it costs when it does not.
+
+## Install
+
+```bash
+pip install se-interpretive-kernel
+```
+
+Python 3.12 or newer. No runtime dependencies. The package is typed.
+
+## Quick start
+
+Two probes read two frames. The declared regime says frames `a` and `b` are the
+same, and outputs are compared by equality.
+
+```python
+from se_interpretive_kernel.artifact import Artifact
+from se_interpretive_kernel.explain import explain, format_steps
+from se_interpretive_kernel.generated import generated
+from se_interpretive_kernel.kernel import coherent
+from se_interpretive_kernel.partition import Partition
+from se_interpretive_kernel.witness import find_witness
+
+artifact = Artifact(
+    frames=("a", "b"),
+    outputs=("x", "y", "z"),
+    probes=("p", "q"),
+    table={("p", "a"): "x", ("p", "b"): "y", ("q", "a"): "y", ("q", "b"): "z"},
+)
+same = Partition.from_blocks(artifact.frames, [("a", "b")])
+equal = Partition.discrete(artifact.outputs)
+
+print(coherent(artifact, artifact.probes, same, equal))
+# False
+
+print(find_witness(artifact, artifact.probes, same, equal))
+# Witness(frame_1='a', frame_2='b', probe='p', output_1='x', output_2='y')
+
+print(generated(artifact, artifact.probes, same).blocks())
+# (('x', 'y', 'z'),)
+
+print(format_steps(explain(artifact, artifact.probes, same, "x", "z")))
+# 1. probe 'p' reads frame 'a' as 'x' and frame 'b' as 'y'; the frame regime relates those two frames
+# 2. probe 'q' reads frame 'a' as 'y' and frame 'b' as 'z'; the frame regime relates those two frames
+```
+
+The regime is coherent only if `x`, `y`, and `z` are called the same, and the
+derivation shows why.
 
 ## Purpose
 
@@ -49,6 +96,15 @@ not
 
 The construction is domain-agnostic.
 Interpretation is supplied by the consuming domain and not imported.
+
+The package reports commitments and differences.
+It reports whether a declared identity regime is consistent
+with a declared interpretation,
+what the regime obliges the outputs to be, and
+where two regimes disagree.
+It does not certify ground truth:
+when two regimes disagree,
+it shows where and why, and does not say which is correct.
 
 ## Comparison Liftings Have Laws
 
@@ -156,16 +212,16 @@ The boundary of the current slice is explicit.
 
 ## Citation
 
-[CITATION.cff](./CITATION.cff)
+[CITATION.cff](https://github.com/structural-explainability/se-interpretive-kernel/blob/main/CITATION.cff)
 
 ## Software Metadata
 
-[CodeMeta (`codemeta.json`)](./codemeta.json)
+[CodeMeta (`codemeta.json`)](https://github.com/structural-explainability/se-interpretive-kernel/blob/main/codemeta.json)
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](https://github.com/structural-explainability/se-interpretive-kernel/blob/main/LICENSE)
 
 ## Repository Manifest
 
-[SE_MANIFEST.toml](./SE_MANIFEST.toml)
+[SE_MANIFEST.toml](https://github.com/structural-explainability/se-interpretive-kernel/blob/main/SE_MANIFEST.toml)

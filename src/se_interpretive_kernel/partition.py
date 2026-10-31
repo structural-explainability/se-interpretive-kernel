@@ -23,6 +23,8 @@ Extraction is not justified until a second consumer needs this same public
 surface.
 """
 
+from __future__ import annotations
+
 from collections.abc import Hashable, Iterable, Iterator, Mapping, Sequence
 from dataclasses import dataclass, field
 from itertools import pairwise

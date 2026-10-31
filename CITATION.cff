@@ -13,7 +13,7 @@ message: "If you use this work, please cite it using the metadata in this file."
 
 title: "Structural Explainability Verification: Interpretive Kernel"
 version: "0.1.0"
-date-released: "2026-10-30"
+date-released: "2026-10-31"
 
 authors:
   - family-names: Case

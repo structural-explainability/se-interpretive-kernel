@@ -13,7 +13,7 @@ and this project adheres to **[Semantic Versioning](https://semver.org/spec/v2.0
 
 ---
 
-## [0.1.0] - 2026-10-30
+## [0.1.0] - 2026-10-31
 
 ### Added
 
@@ -33,6 +33,13 @@ and this project adheres to **[Semantic Versioning](https://semver.org/spec/v2.0
 - Added exhaustive law checks over every probe family and every pair of
   regimes, and seeded random artifacts, run by the command-line interface.
 - Added documentation, CI, release automation, and the repository manifest.
+- Added probe sensitivity: separating probes, load-bearing probes, minimal
+  probe sets, and the threshold each probe forces alone.
+- Added derivations for forced identifications: the chain of probes and frame
+  pairs that connects two outputs in the threshold.
+- Added a loader that builds an artifact and a frame regime from tabular data,
+  with declared handling of empty cells.
+- Added a report of the differences between two frame regimes.
 
 ---
 
@@ -61,6 +68,12 @@ Follow these steps exactly when creating a new release.
 ```pwsh
 .\sit.ps1
 
+uv lock
+foreach ($v in '3.12','3.13','3.14','3.15') {
+  Write-Host "=== Python $v"
+  uv run --isolated --frozen --python $v --no-default-groups --group dev python -m pytest -q
+}
+
 uvx gha-tools autoupdate --pin=all --write .github/workflows
 
 uvx zizmor@latest .github/
@@ -69,6 +82,7 @@ uvx zizmor@latest .github/
 uvx cffconvert --validate
 uvx se-manifest-schema validate-manifest --strict
 
+# This may take a little time
 uv run se-interpretive-kernel --random 2000 --seed 0
 
 uv run python -c "import shutil; from pathlib import Path; shutil.rmtree(Path('dist'), ignore_errors=True)"

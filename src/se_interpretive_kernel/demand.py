@@ -14,6 +14,8 @@ delta(x,z) <= delta(x,y) join delta(y,z). Distinct frames may have zero
 demand, so delta does not recover identity of frames.
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 
 from .artifact import Artifact

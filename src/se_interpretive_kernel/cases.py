@@ -9,6 +9,8 @@ Lean names are given in each docstring. Carriers of size 2 or 3 use integers;
 Booleans are written 0 and 1.
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 
 from .artifact import Artifact
